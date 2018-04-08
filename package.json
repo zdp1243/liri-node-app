@@ -19,7 +19,9 @@
   "homepage": "https://github.com/zdp1243/liri-node-app#readme",
   "dependencies": {
     "dotenv": "^5.0.1",
+    "fs": "0.0.1-security",
     "lodash": "^4.17.5",
+    "node-spotify-api": "^1.0.7",
     "require": "^2.4.20",
     "spotify": "^0.3.0",
     "twitter": "^1.7.1"
