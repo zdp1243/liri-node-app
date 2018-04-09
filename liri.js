@@ -101,6 +101,12 @@ function spotifyThis() {
   });
 }
 
+//Do What it Says
+// //function saysThis() {
+//Need to make function run saysThis when 'node liri.js do-what-it-says' is entered as a command in the terminal. This function should link to random.txt, push text in random.txt into an array, make a for loop with Math.random to choose one of the random commands and generate a new command for 'node liri.js <random selection> and run it through the other functions (OMDB, Spotify...).
+//commands, then hav
+// }
+
 switch (whichFunction) {
   case "movie-this":
     movieThis();
@@ -111,9 +117,9 @@ switch (whichFunction) {
   case "spotify-this-song":
     spotifyThis();
     break;
-  // case "do-what-it-says":
-  //   saysThis();
-  //   break;
+  case "do-what-it-says":
+    saysThis();
+    break;
   default:
     console.log("This is not a valid command.");
 }
