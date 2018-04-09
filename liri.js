@@ -12,66 +12,74 @@ var spotify = new Spotify(keys.spotifyKeys);
 var Twitter = require("twitter");
 var client = new Twitter(keys.twitterKeys);
 
-// function twitterThis() {
-//   client.get("favorites/list", function(error, tweets, response) {
-//     if (error) throw error;
-//     console.log(tweets); // The favorites.
-//     console.log(response); // Raw response object.
-//   });
+function twitterThis() {
+  var params = { screen_name: "JJPowerWrites" };
+  client.get("statuses/user_timeline", params, function(
+    error,
+    tweets,
+    response
+  ) {
+    if (!error && response.statusCode === 200) {
+      for (var i = 0; i < tweets.length; i++) {
+        console.log(tweets[i].text);
+        {
+          count: 20;
+        }
+      }
+    } else {
+      console.log(error);
+    }
+  });
+}
 
-//   client.post("statuses/update", { status: "I Love Twitter" }, function(
-//     error,
-//     tweet,
-//     response
-//   ) {
-//     if (error) throw error;
-//     console.log(tweet); // Tweet body.
-//     console.log(response); // Raw response object.
-//   });
+//OMDB API
+function movieThis() {
+  //   var request = require("request");
 
-//   var stream = client.stream("statuses/filter", { track: "javascript" });
-//   stream.on("data", function(event) {
-//     console.log(event && event.text);
-//   });
+  console.log("movies");
+  // Store all of the arguments in an array
+  var nodeArgs = process.argv;
+  var searchItem = process.argv[3];
+  // Create an empty variable for holding the movie name
+  var movieName = "";
 
-//   stream.on("error", function(error) {
-//     throw error;
-//   });
+  // Loop through all the words in the node argument
+  for (var i = 3; i < nodeArgs.length; i++) {
+    if (i > 3 && i < nodeArgs.length) {
+      movieName = movieName + "+" + nodeArgs[i];
+    } else {
+      movieName += nodeArgs[i];
+    }
+  }
 
-//   var params = { screen_name: "JJ Power" };
-//   client.get("statuses/user_timeline", params, function(
-//     error,
-//     tweets,
-//     response
-//   ) {
-//     if (!error && response.statusCode === 200) {
-//       console.log(tweets);
-//       {
-//         count: 20;
-//       }
+  if (!searchItem) {
+    movieName = "Mr. Nobody";
+    console.log(
+      "If you haven't watched Mr. Nobody, then you should--it's on Netflix! <http://www.imdb.com/title/tt0485947/>"
+    );
+  }
+  var queryUrl =
+    "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+  request(queryUrl, function(error, response, body) {
+    // If the request is successful
+    if (!error && response.statusCode === 200) {
+      console.log("Title:  " + JSON.parse(body).Title);
+      console.log("Release Year: " + JSON.parse(body).Year);
+      console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
+      console.log(
+        "Rotten Tomatoes Rating:  " + JSON.parse(body).Ratings[1].Value
+      );
+      console.log("Country in which Produced:  " + JSON.parse(body).Country);
+      console.log("Language:  " + JSON.parse(body).Language);
+      console.log("Plot Synopsis:  " + JSON.parse(body).Plot);
+      console.log("Actors:  " + JSON.parse(body).Actors);
+    } else {
+      console.log("There was an error with your request.  Please try again.");
+    }
+  });
+}
 
-//       stream.on("error", function(error) {
-//         throw error;
-//       });
-//     }
-//   });
-
-//   function movieThis() {
-//     console.log("movies");
-//     // Then run a request to the OMDB API with the movie specified
-//     //   request(
-//     //     "http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=trilogy",
-//     //     function(error, response, body) {
-//     //       // If the request is successful (i.e. if the response status code is 200)
-//     //       if (!error && response.statusCode === 200) {
-//     //         // Parse the body of the site and recover just the imdbRating
-//     //         // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
-//     //  console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
-//     //       }
-//     //     }
-//     //   );
-//   }
-
+//Spotify API
 function spotifyThis() {
   if (!searchItem) {
     searchItem = "I Saw the Sign";
@@ -82,13 +90,14 @@ function spotifyThis() {
     }
 
     var items = data.tracks.items;
-    console.log(items[0]);
+    // console.log(items[0]);
     // for (var i = 0; i < items.length; i++) {
     // console.log(items[i]);
-    //console.log("Artists name: " + items[i].artists[0].name);
-    //console.log("Song name:  "  + items[i].artists[].name);
-    //console.log("Preview link:  "  + items[i].artists[].name);
-    //console.log("Album:  " + items[].artists[].name);
+    console.log("Artists name: " + items[0].artists[0].name);
+    console.log("Song title:  " + items[0].name);
+    console.log("Preview link:  " + items[0].preview_url);
+    console.log("Album:  " + items[0].album.name);
+    // }
   });
 }
 
@@ -102,4 +111,9 @@ switch (whichFunction) {
   case "spotify-this-song":
     spotifyThis();
     break;
+  // case "do-what-it-says":
+  //   saysThis();
+  //   break;
+  default:
+    console.log("This is not a valid command.");
 }
