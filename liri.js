@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const request = require("request");
 const keys = require("./keys.js");
+// const text = require("./random.txt");
 
 var whichFunction = process.argv[2];
 var searchItem = process.argv[3];
@@ -34,12 +35,11 @@ function twitterThis() {
 
 //OMDB API
 function movieThis() {
-  //   var request = require("request");
-
   console.log("movies");
   // Store all of the arguments in an array
   var nodeArgs = process.argv;
   var searchItem = process.argv[3];
+
   // Create an empty variable for holding the movie name
   var movieName = "";
 
@@ -58,6 +58,7 @@ function movieThis() {
       "If you haven't watched Mr. Nobody, then you should--it's on Netflix! <http://www.imdb.com/title/tt0485947/>"
     );
   }
+
   var queryUrl =
     "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
   request(queryUrl, function(error, response, body) {
@@ -80,6 +81,7 @@ function movieThis() {
 }
 
 //Spotify API
+
 function spotifyThis() {
   if (!searchItem) {
     searchItem = "I Saw the Sign";
@@ -102,10 +104,19 @@ function spotifyThis() {
 }
 
 //Do What it Says
-// //function saysThis() {
-//Need to make function run saysThis when 'node liri.js do-what-it-says' is entered as a command in the terminal. This function should link to random.txt, push text in random.txt into an array, make a for loop with Math.random to choose one of the random commands and generate a new command for 'node liri.js <random selection> and run it through the other functions (OMDB, Spotify...).
-//commands, then hav
+
+//function saysThis() {
+//This function should run saysThis when 'node liri.js do-what-it-says'
+//is entered as a command in the terminal. This function should
+//link to random.txt (with const variable at top of file), push text in random.txt into an array,
+//make a for loop with Math.random to choose one of the random
+//text commands and generate a new command for
+//'node liri.js <random selection> and run it through the other
+//functions (OMDB, Spotify...).
+//
 // }
+
+//Switch Function
 
 switch (whichFunction) {
   case "movie-this":
@@ -117,9 +128,9 @@ switch (whichFunction) {
   case "spotify-this-song":
     spotifyThis();
     break;
-  case "do-what-it-says":
-    saysThis();
-    break;
+  // case "do-what-it-says":
+  //   saysThis();
+  //   break;
   default:
     console.log("This is not a valid command.");
 }
