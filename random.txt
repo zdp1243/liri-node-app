@@ -1,4 +1,3 @@
-```js
 spotify-this-song 'I Want it That Way'
 movie-this 'Kafka'
 spotify-this-song 'Woman, Amen'
@@ -25,10 +24,9 @@ spotify-this-song 'Invisible Touch'
 movie-this 'Buster'
 spotify-this-song 'Somewhere Over the Rainbow'
 movie-this 'Bill and Ted's Excellent Adventure'
-spotify-this 'You Are the Everything'
+spotify-this-song 'You Are the Everything'
 movie-this 'Serendipity'
-spotify-this 'Oh, Micky'
+spotify-this-song 'Oh, Micky'
 movie-this 'The Princess Bride'
-spotify-this 'Bohemian Rhapsody'
+spotify-this-song 'Bohemian Rhapsody'
 
-```

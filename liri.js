@@ -2,7 +2,8 @@ require("dotenv").config();
 
 const request = require("request");
 const keys = require("./keys.js");
-// const text = require("./random.txt");
+//const text = require("./random.txt");
+const fs = require("fs");
 
 var whichFunction = process.argv[2];
 var searchItem = process.argv[3];
@@ -34,25 +35,25 @@ function twitterThis() {
 }
 
 //OMDB API
-function movieThis() {
+function movieThis(item) {
   console.log("movies");
   // Store all of the arguments in an array
-  var nodeArgs = process.argv;
-  var searchItem = process.argv[3];
+  //var nodeArgs = process.argv;
+  // var searchItem = item;
 
   // Create an empty variable for holding the movie name
-  var movieName = "";
+  var movieName = item;
 
   // Loop through all the words in the node argument
-  for (var i = 3; i < nodeArgs.length; i++) {
-    if (i > 3 && i < nodeArgs.length) {
-      movieName = movieName + "+" + nodeArgs[i];
-    } else {
-      movieName += nodeArgs[i];
-    }
-  }
+  // for (var i = 3; i < nodeArgs.length; i++) {
+  //   if (i > 3 && i < nodeArgs.length) {
+  //     movieName = movieName + "+" + nodeArgs[i];
+  //   } else {
+  //     movieName += nodeArgs[i];
+  //   }
+  // }
 
-  if (!searchItem) {
+  if (!item) {
     movieName = "Mr. Nobody";
     console.log(
       "If you haven't watched Mr. Nobody, then you should--it's on Netflix! <http://www.imdb.com/title/tt0485947/>"
@@ -82,7 +83,8 @@ function movieThis() {
 
 //Spotify API
 
-function spotifyThis() {
+function spotifyThis(item) {
+  var searchItem = item;
   if (!searchItem) {
     searchItem = "I Saw the Sign";
   }
@@ -105,32 +107,39 @@ function spotifyThis() {
 
 //Do What it Says
 
-//function saysThis() {
-//This function should run saysThis when 'node liri.js do-what-it-says'
-//is entered as a command in the terminal. This function should
-//link to random.txt (with const variable at top of file), push text in random.txt into an array,
-//make a for loop with Math.random to choose one of the random
-//text commands and generate a new command for
-//'node liri.js <random selection> and run it through the other
-//functions (OMDB, Spotify...).
-//
-// }
+function saysThis() {
+  fs.readFile("random.txt", "utf8", function(err, data) {
+    var dataArray = data.split("\n");
+    // console.log(dataArray);
+    var random = dataArray[Math.floor(Math.random() * dataArray.length)];
+    console.log(random);
+    var choice = random.split("'");
+    console.log(choice);
+    console.log(typeof choice[0]);
+    console.log(typeof choice[1]);
+    if (choice[0] == "movie-this ") {
+      movieThis(choice[1]);
+    } else {
+      spotifyThis(choice[1]);
+    }
+  });
+}
 
 //Switch Function
 
 switch (whichFunction) {
   case "movie-this":
-    movieThis();
+    movieThis(searchItem);
     break;
   case "my-tweets":
     twitterThis();
     break;
   case "spotify-this-song":
-    spotifyThis();
+    spotifyThis(searchItem);
     break;
-  // case "do-what-it-says":
-  //   saysThis();
-  //   break;
+  case "do-what-it-says":
+    saysThis();
+    break;
   default:
     console.log("This is not a valid command.");
 }
